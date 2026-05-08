@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { Play, Film, Scissors, Wand2, Music, Palette, Check, Star, Mail, Instagram, Youtube, Twitter, ArrowRight, Menu, X } from "lucide-react";
+import { toast } from "sonner";
+import { Toaster } from "@/components/ui/sonner";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -467,10 +469,12 @@ function Index() {
   const [plan, setPlan] = useState("");
   const handleOrder = (p: string) => {
     setPlan(p);
+    toast.success(`${p} selected`, { description: "Fill the form below to place your order." });
     setTimeout(() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" }), 50);
   };
   return (
     <div className="min-h-screen bg-background text-foreground">
+      <Toaster position="top-center" theme="dark" />
       <Nav />
       <Hero />
       <Services />
