@@ -7,12 +7,12 @@ export const Route = createFileRoute("/")({
 });
 
 const SAMPLE_VIDEOS = [
-  { src: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4", poster: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=800&q=80", title: "Cinematic Reel", tag: "Brand Ad" },
-  { src: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4", poster: "https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=800&q=80", title: "Music Video", tag: "Color Grade" },
-  { src: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4", poster: "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=800&q=80", title: "Travel Vlog", tag: "Story Edit" },
-  { src: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4", poster: "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?w=800&q=80", title: "Short Film", tag: "VFX" },
-  { src: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4", poster: "https://images.unsplash.com/photo-1492724724894-7464c27d0ceb?w=800&q=80", title: "Product Promo", tag: "Motion GFX" },
-  { src: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4", poster: "https://images.unsplash.com/photo-1485846234645-a62644f84728?w=800&q=80", title: "YouTube Edit", tag: "Long Form" },
+  { id: "LXb3EKWsInQ", title: "Cinematic Travel Reel", tag: "Color Grade" },
+  { id: "ScMzIvxBSi4", title: "Nature Showreel", tag: "Cinematic" },
+  { id: "aqz-KE-bpKQ", title: "Big Buck Bunny", tag: "Short Film" },
+  { id: "kJQP7kiw5Fk", title: "Music Video Edit", tag: "Music Video" },
+  { id: "9bZkp7q19f0", title: "Viral Short Edit", tag: "Short Form" },
+  { id: "ktvTqknDobU", title: "Pop Promo Cut", tag: "Brand Ad" },
 ];
 
 const HERO_VIDEO = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4";
