@@ -76,10 +76,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "description", content: "KaelCuts crafts cinematic edits, reels, and ads for creators and brands. View demos, reviews, and pricing." },
       { name: "author", content: "KaelCuts" },
       { property: "og:title", content: "KaelCuts — Professional Video Editor" },
-      { property: "og:description", content: "Cinematic video editing for creators and brands." },
+      { property: "og:description", content: "KaelCuts crafts cinematic edits, reels, and ads for creators and brands. View demos, reviews, and pricing." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "KaelCuts — Professional Video Editor" },
+      { name: "twitter:description", content: "KaelCuts crafts cinematic edits, reels, and ads for creators and brands. View demos, reviews, and pricing." },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/44m9eRxHayYGQIMzMzISe2JObqw1/social-images/social-1778262701507-KaelCuts.webp" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/44m9eRxHayYGQIMzMzISe2JObqw1/social-images/social-1778262701507-KaelCuts.webp" },
     ],
     links: [
       {
