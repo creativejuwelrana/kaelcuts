@@ -7,12 +7,12 @@ export const Route = createFileRoute("/")({
 });
 
 const SAMPLE_VIDEOS = [
-  { src: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4", poster: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=800&q=80", title: "Cinematic Reel", tag: "Brand Ad" },
-  { src: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4", poster: "https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=800&q=80", title: "Music Video", tag: "Color Grade" },
-  { src: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4", poster: "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=800&q=80", title: "Travel Vlog", tag: "Story Edit" },
-  { src: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4", poster: "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?w=800&q=80", title: "Short Film", tag: "VFX" },
-  { src: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4", poster: "https://images.unsplash.com/photo-1492724724894-7464c27d0ceb?w=800&q=80", title: "Product Promo", tag: "Motion GFX" },
-  { src: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4", poster: "https://images.unsplash.com/photo-1485846234645-a62644f84728?w=800&q=80", title: "YouTube Edit", tag: "Long Form" },
+  { id: "LXb3EKWsInQ", title: "Cinematic Travel Reel", tag: "Color Grade" },
+  { id: "ScMzIvxBSi4", title: "Nature Showreel", tag: "Cinematic" },
+  { id: "aqz-KE-bpKQ", title: "Big Buck Bunny", tag: "Short Film" },
+  { id: "kJQP7kiw5Fk", title: "Music Video Edit", tag: "Music Video" },
+  { id: "9bZkp7q19f0", title: "Viral Short Edit", tag: "Short Form" },
+  { id: "ktvTqknDobU", title: "Pop Promo Cut", tag: "Brand Ad" },
 ];
 
 const HERO_VIDEO = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4";
@@ -152,35 +152,37 @@ function Services() {
 }
 
 function VideoCard({ v }: { v: typeof SAMPLE_VIDEOS[0] }) {
-  const ref = useRef<HTMLVideoElement>(null);
   const [playing, setPlaying] = useState(false);
-  const toggle = () => {
-    if (!ref.current) return;
-    if (ref.current.paused) {
-      ref.current.play();
-      setPlaying(true);
-    } else {
-      ref.current.pause();
-      setPlaying(false);
-    }
-  };
   return (
-    <div className="card-hover group relative aspect-video rounded-2xl overflow-hidden bg-card border border-border cursor-pointer" onClick={toggle}>
-      <video ref={ref} poster={v.poster} muted loop playsInline preload="none" className="w-full h-full object-cover" onPause={() => setPlaying(false)} onPlay={() => setPlaying(true)}>
-        <source src={v.src} type="video/mp4" />
-      </video>
-      <div className={`absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent transition-opacity ${playing ? "opacity-0" : "opacity-100"} group-hover:opacity-60`} />
-      {!playing && (
-        <button className="absolute inset-0 flex items-center justify-center" aria-label="play">
-          <span className="w-20 h-20 rounded-full bg-gradient-red flex items-center justify-center shadow-red group-hover:scale-110 transition-transform animate-pulse-red">
-            <Play className="w-8 h-8 text-white ml-1" fill="white" />
+    <div className="card-hover group relative aspect-video rounded-2xl overflow-hidden bg-card border border-border">
+      {playing ? (
+        <iframe
+          className="w-full h-full"
+          src={`https://www.youtube.com/embed/${v.id}?autoplay=1&rel=0`}
+          title={v.title}
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+        />
+      ) : (
+        <button onClick={() => setPlaying(true)} className="absolute inset-0 w-full h-full cursor-pointer" aria-label={`Play ${v.title}`}>
+          <img
+            src={`https://img.youtube.com/vi/${v.id}/maxresdefault.jpg`}
+            onError={(e) => { (e.target as HTMLImageElement).src = `https://img.youtube.com/vi/${v.id}/hqdefault.jpg`; }}
+            alt={v.title}
+            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent group-hover:from-background/90 transition-all" />
+          <span className="absolute inset-0 flex items-center justify-center">
+            <span className="w-20 h-20 rounded-full bg-gradient-red flex items-center justify-center shadow-red group-hover:scale-110 transition-transform animate-pulse-red">
+              <Play className="w-8 h-8 text-white ml-1" fill="white" />
+            </span>
           </span>
+          <div className="absolute bottom-0 left-0 right-0 p-5 text-left">
+            <span className="inline-block px-3 py-1 bg-primary/20 backdrop-blur border border-primary/40 text-primary text-xs font-semibold rounded-full mb-2">{v.tag}</span>
+            <h4 className="text-white text-xl font-bold">{v.title}</h4>
+          </div>
         </button>
       )}
-      <div className={`absolute bottom-0 left-0 right-0 p-5 transition-transform ${playing ? "translate-y-full" : "translate-y-0"}`}>
-        <span className="inline-block px-3 py-1 bg-primary/20 backdrop-blur border border-primary/40 text-primary text-xs font-semibold rounded-full mb-2">{v.tag}</span>
-        <h4 className="text-white text-xl font-bold">{v.title}</h4>
-      </div>
     </div>
   );
 }
@@ -197,7 +199,7 @@ function Demo() {
           <p className="text-muted-foreground max-w-xl mx-auto">Click any video to play. Real client work, real results.</p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {SAMPLE_VIDEOS.map((v) => <VideoCard key={v.src} v={v} />)}
+          {SAMPLE_VIDEOS.map((v) => <VideoCard key={v.id} v={v} />)}
         </div>
       </div>
     </section>
