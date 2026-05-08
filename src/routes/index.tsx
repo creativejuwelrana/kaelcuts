@@ -289,7 +289,7 @@ function Pricing({ onOrder }: { onOrder: (plan: string) => void }) {
                 onClick={() => onOrder(`${p.name} (${p.price})`)}
                 className={`block text-center w-full py-3 rounded-xl font-semibold transition-all ${p.featured ? "bg-white text-primary hover:scale-105" : "bg-gradient-red text-white hover:scale-105 shadow-red"}`}
               >
-                Order Now
+                Get Started
               </button>
             </div>
           ))}
