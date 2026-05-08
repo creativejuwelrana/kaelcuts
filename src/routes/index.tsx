@@ -248,7 +248,7 @@ function Reviews() {
   );
 }
 
-function Pricing() {
+function Pricing({ onOrder }: { onOrder: (plan: string) => void }) {
   const plans = [
     { name: "Starter", price: "$149", desc: "Perfect for short-form creators.", features: ["Up to 60s edit", "Basic color correction", "Music & SFX", "2 revisions", "48h delivery"], featured: false },
     { name: "Pro", price: "$449", desc: "For YouTubers & brands.", features: ["Up to 10 min edit", "Cinematic color grade", "Motion graphics", "Sound design", "Unlimited revisions", "72h delivery"], featured: true },
@@ -285,9 +285,12 @@ function Pricing() {
                   </li>
                 ))}
               </ul>
-              <a href="#contact" className={`block text-center w-full py-3 rounded-xl font-semibold transition-all ${p.featured ? "bg-white text-primary hover:scale-105" : "bg-gradient-red text-white hover:scale-105 shadow-red"}`}>
-                Get Started
-              </a>
+              <button
+                onClick={() => onOrder(`${p.name} (${p.price})`)}
+                className={`block text-center w-full py-3 rounded-xl font-semibold transition-all ${p.featured ? "bg-white text-primary hover:scale-105" : "bg-gradient-red text-white hover:scale-105 shadow-red"}`}
+              >
+                Order Now
+              </button>
             </div>
           ))}
         </div>
@@ -296,19 +299,118 @@ function Pricing() {
   );
 }
 
-function Contact() {
+function Contact({ plan, setPlan }: { plan: string; setPlan: (p: string) => void }) {
+  const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [sent, setSent] = useState(false);
+
+  const validate = () => {
+    const e: Record<string, string> = {};
+    if (!form.name.trim() || form.name.length > 100) e.name = "Please enter a valid name (max 100)";
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email) || form.email.length > 255) e.email = "Please enter a valid email";
+    if (!form.message.trim() || form.message.length > 1000) e.message = "Message required (max 1000)";
+    setErrors(e);
+    return Object.keys(e).length === 0;
+  };
+
+  const onSubmit = (ev: React.FormEvent) => {
+    ev.preventDefault();
+    if (!validate()) return;
+    const subject = encodeURIComponent(`New Order from ${form.name}${plan ? ` — ${plan}` : ""}`);
+    const body = encodeURIComponent(
+      `Name: ${form.name}\nEmail: ${form.email}\nPlan: ${plan || "Custom"}\n\nMessage:\n${form.message}`,
+    );
+    window.location.href = `mailto:hello@kaelcuts.com?subject=${subject}&body=${body}`;
+    setSent(true);
+  };
+
   return (
     <section id="contact" className="relative py-32 px-6">
-      <div className="max-w-4xl mx-auto text-center">
-        <h2 className="text-5xl md:text-7xl font-bold tracking-tight mb-6" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-          Let's make something <span className="text-gradient-red animate-glow">unforgettable</span>.
-        </h2>
-        <p className="text-xl text-muted-foreground mb-10 max-w-2xl mx-auto">
-          Have a project in mind? Drop me a message and let's talk about your vision.
-        </p>
-        <a href="mailto:hello@kaelcuts.com" className="inline-flex items-center gap-3 px-10 py-5 bg-gradient-red text-white text-lg font-semibold rounded-xl shadow-red hover:scale-105 transition-transform animate-pulse-red">
-          <Mail className="w-5 h-5" /> hello@kaelcuts.com
-        </a>
+      <div className="max-w-5xl mx-auto">
+        <div className="text-center mb-12">
+          <p className="text-primary font-semibold tracking-widest text-sm mb-3">CONTACT & ORDER</p>
+          <h2 className="text-5xl md:text-6xl font-bold tracking-tight mb-4" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+            Let's make something <span className="text-gradient-red animate-glow">unforgettable</span>.
+          </h2>
+          <p className="text-lg text-muted-foreground max-w-xl mx-auto">
+            Pick a plan or describe your project. I'll get back within 24 hours.
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-5 gap-8">
+          <div className="md:col-span-2 space-y-6">
+            <div className="p-6 bg-card border border-border rounded-2xl">
+              <Mail className="w-6 h-6 text-primary mb-3" />
+              <div className="font-semibold mb-1">Email</div>
+              <a href="mailto:hello@kaelcuts.com" className="text-muted-foreground hover-red">hello@kaelcuts.com</a>
+            </div>
+            <div className="p-6 bg-card border border-border rounded-2xl">
+              <div className="font-semibold mb-2">Response Time</div>
+              <p className="text-muted-foreground text-sm">Within 24 hours, Mon — Sat. Rush jobs welcome.</p>
+            </div>
+            <div className="p-6 bg-gradient-red rounded-2xl shadow-red text-white">
+              <div className="font-semibold mb-2">Currently Booking</div>
+              <p className="text-white/90 text-sm">2 slots open this month — first come, first edited.</p>
+            </div>
+          </div>
+
+          <form onSubmit={onSubmit} className="md:col-span-3 p-8 bg-card border border-border rounded-2xl space-y-5">
+            {plan && (
+              <div className="flex items-center justify-between px-4 py-3 bg-primary/10 border border-primary/30 rounded-lg">
+                <span className="text-sm">Selected Plan: <strong className="text-primary">{plan}</strong></span>
+                <button type="button" onClick={() => setPlan("")} className="text-xs text-muted-foreground hover-red">Clear</button>
+              </div>
+            )}
+            <div>
+              <label className="block text-sm font-semibold mb-2">Your Name</label>
+              <input
+                type="text"
+                maxLength={100}
+                value={form.name}
+                onChange={(e) => setForm({ ...form, name: e.target.value })}
+                className="w-full px-4 py-3 bg-background border border-border rounded-lg focus:border-primary focus:outline-none transition-colors"
+                placeholder="John Doe"
+              />
+              {errors.name && <p className="text-primary text-sm mt-1">{errors.name}</p>}
+            </div>
+            <div>
+              <label className="block text-sm font-semibold mb-2">Email Address</label>
+              <input
+                type="email"
+                maxLength={255}
+                value={form.email}
+                onChange={(e) => setForm({ ...form, email: e.target.value })}
+                className="w-full px-4 py-3 bg-background border border-border rounded-lg focus:border-primary focus:outline-none transition-colors"
+                placeholder="you@email.com"
+              />
+              {errors.email && <p className="text-primary text-sm mt-1">{errors.email}</p>}
+            </div>
+            <div>
+              <label className="block text-sm font-semibold mb-2">Project Details</label>
+              <textarea
+                maxLength={1000}
+                rows={5}
+                value={form.message}
+                onChange={(e) => setForm({ ...form, message: e.target.value })}
+                className="w-full px-4 py-3 bg-background border border-border rounded-lg focus:border-primary focus:outline-none transition-colors resize-none"
+                placeholder="Tell me about your project, length, deadline, style..."
+              />
+              <div className="flex justify-between mt-1">
+                {errors.message ? <p className="text-primary text-sm">{errors.message}</p> : <span />}
+                <span className="text-xs text-muted-foreground">{form.message.length}/1000</span>
+              </div>
+            </div>
+            <button
+              type="submit"
+              className="w-full py-4 bg-gradient-red text-white font-semibold rounded-xl shadow-red hover:scale-[1.02] transition-transform flex items-center justify-center gap-2"
+            >
+              <Mail className="w-5 h-5" /> Send Order Request
+            </button>
+            {sent && (
+              <p className="text-center text-sm text-primary animate-float-up">Your email client should open. If not, email hello@kaelcuts.com directly.</p>
+            )}
+          </form>
+        </div>
       </div>
     </section>
   );
@@ -362,6 +464,11 @@ function Footer() {
 }
 
 function Index() {
+  const [plan, setPlan] = useState("");
+  const handleOrder = (p: string) => {
+    setPlan(p);
+    setTimeout(() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" }), 50);
+  };
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Nav />
@@ -369,8 +476,8 @@ function Index() {
       <Services />
       <Demo />
       <Reviews />
-      <Pricing />
-      <Contact />
+      <Pricing onOrder={handleOrder} />
+      <Contact plan={plan} setPlan={setPlan} />
       <Footer />
     </div>
   );
