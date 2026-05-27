@@ -315,15 +315,28 @@ function Contact({ plan, setPlan }: { plan: string; setPlan: (p: string) => void
     return Object.keys(e).length === 0;
   };
 
-  const onSubmit = (ev: React.FormEvent) => {
+  const [sending, setSending] = useState(false);
+
+  const onSubmit = async (ev: React.FormEvent) => {
     ev.preventDefault();
     if (!validate()) return;
-    const subject = encodeURIComponent(`New Order from ${form.name}${plan ? ` — ${plan}` : ""}`);
-    const body = encodeURIComponent(
-      `Name: ${form.name}\nEmail: ${form.email}\nPlan: ${plan || "Custom"}\n\nMessage:\n${form.message}`,
-    );
-    window.location.href = `mailto:hello@kaelcuts.com?subject=${subject}&body=${body}`;
-    setSent(true);
+    setSending(true);
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...form, plan }),
+      });
+      if (!res.ok) throw new Error("send failed");
+      setSent(true);
+      setForm({ name: "", email: "", message: "" });
+      setPlan("");
+      toast.success("Order sent!", { description: "Your message has been delivered. I'll reply within 24 hours." });
+    } catch {
+      toast.error("Failed to send", { description: "Please try again in a moment." });
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
@@ -404,12 +417,13 @@ function Contact({ plan, setPlan }: { plan: string; setPlan: (p: string) => void
             </div>
             <button
               type="submit"
-              className="w-full py-4 bg-gradient-red text-white font-semibold rounded-xl shadow-red hover:scale-[1.02] transition-transform flex items-center justify-center gap-2"
+              disabled={sending}
+              className="w-full py-4 bg-gradient-red text-white font-semibold rounded-xl shadow-red hover:scale-[1.02] transition-transform flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
             >
-              <Mail className="w-5 h-5" /> Send Order Request
+              <Mail className="w-5 h-5" /> {sending ? "Sending..." : "Send Order Request"}
             </button>
             {sent && (
-              <p className="text-center text-sm text-primary animate-float-up">Your email client should open. If not, email hello@kaelcuts.com directly.</p>
+              <p className="text-center text-sm text-primary animate-float-up">Your order has been delivered. I'll get back to you soon!</p>
             )}
           </form>
         </div>
