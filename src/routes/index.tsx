@@ -438,7 +438,7 @@ function Contact({ plan, setPlan }: { plan: string; setPlan: (p: string) => void
             <div className="p-6 bg-card border border-border rounded-2xl">
               <Mail className="w-6 h-6 text-primary mb-3" />
               <div className="font-semibold mb-1">Email</div>
-              <a href="mailto:hello@kaelcuts.com" className="text-muted-foreground hover-red">hello@kaelcuts.com</a>
+              <a href="mailto:mahadihassan.data@gmail.com" className="text-muted-foreground hover-red break-all">mahadihassan.data@gmail.com</a>
             </div>
             <div className="p-6 bg-card border border-border rounded-2xl">
               <div className="font-semibold mb-2">Response Time</div>
