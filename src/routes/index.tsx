@@ -6,6 +6,87 @@ import { Toaster } from "@/components/ui/sonner";
 
 export const Route = createFileRoute("/")({
   component: Index,
+  head: () => ({
+    meta: [
+      { title: "KaelCuts — Professional Video Editor for Hire | Cinematic Reels, YouTube & Ads" },
+      { name: "description", content: "Hire KaelCuts, a professional freelance video editor specializing in cinematic reels, YouTube edits, short-form content, music videos and brand ads. View demos, reviews, and pricing." },
+      { name: "keywords", content: "video editor, freelance video editor, professional video editor, hire video editor, cinematic video editing, YouTube video editor, reels editor, short form video editor, music video editor, brand video editor, color grading, KaelCuts" },
+      { property: "og:title", content: "KaelCuts — Professional Video Editor for Hire" },
+      { property: "og:description", content: "Cinematic edits, reels, YouTube cuts, music videos and ads — crafted by a pro video editor. See the demo reel." },
+      { property: "og:url", content: "https://kaelcuts.lovable.app/" },
+      { property: "og:type", content: "website" },
+    ],
+    links: [
+      { rel: "canonical", href: "https://kaelcuts.lovable.app/" },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "ProfessionalService",
+          name: "KaelCuts",
+          description: "Professional freelance video editor offering cinematic reels, YouTube edits, short-form content, music videos and brand ads.",
+          url: "https://kaelcuts.lovable.app/",
+          image: "https://storage.googleapis.com/gpt-engineer-file-uploads/44m9eRxHayYGQIMzMzISe2JObqw1/social-images/social-1778262701507-KaelCuts.webp",
+          priceRange: "$$",
+          areaServed: "Worldwide",
+          serviceType: [
+            "Video Editing",
+            "Cinematic Video Editing",
+            "YouTube Video Editing",
+            "Short-Form Video Editing",
+            "Music Video Editing",
+            "Color Grading",
+            "Brand Advertisement Editing",
+          ],
+          provider: {
+            "@type": "Person",
+            name: "KaelCuts",
+            jobTitle: "Professional Video Editor",
+          },
+          aggregateRating: {
+            "@type": "AggregateRating",
+            ratingValue: "5.0",
+            reviewCount: "24",
+          },
+        }),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: [
+            {
+              "@type": "Question",
+              name: "What kind of video editing do you offer?",
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: "Cinematic reels, YouTube long-form, short-form (Reels/TikTok/Shorts), music videos, brand ads, and color grading.",
+              },
+            },
+            {
+              "@type": "Question",
+              name: "How fast is the turnaround?",
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: "Most projects are delivered within 24–72 hours. Rush jobs are welcome.",
+              },
+            },
+            {
+              "@type": "Question",
+              name: "How do I hire you as my video editor?",
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: "Pick a pricing plan, fill out the contact form, and you'll get a reply within 24 hours.",
+              },
+            },
+          ],
+        }),
+      },
+    ],
+  }),
 });
 
 const SAMPLE_VIDEOS = [
